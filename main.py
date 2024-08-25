@@ -13,11 +13,13 @@ MODES = {
     "show all": lambda: show_all(db),
     "update age": lambda: update_age(db),
     "update features": lambda: update_features(db),
-    "delete cat": lambda: delete_cat(db),
+    "delete cat": lambda: delete_one(db),
     "delete all": lambda: delete_all(db),
+    "help": lambda: help(),
     }
 
 def main():
+    print("Щоб переглянути всі команди введіть команду 'help'")
     while True:
         command = input("Введіть команду: ")
         match command:
@@ -27,6 +29,16 @@ def main():
                 MODES[command]()
             case _:
                 print("Invalid command")
+
+def help():
+    print("""
+        'show one' - показує данні кота за його ім'ям
+        'show all' - показує всі данні в колекції
+        'update age' - оновлює вік кота за його ім'ям
+        'update features' - додає особливість кота за його ім'ям
+        'delete cat' - видаляє данні кота за цого ім'ям
+        'delete all' - видаляє всі данні з колекції
+    """)
 
 def show_all(database):
     result = database.cats.find({})
@@ -56,7 +68,7 @@ def update_features(database):
     print(result)
 
 
-def delete_cat(database):
+def delete_one(database):
     cat_name = input("Введіть ім'я кота: ")
     database.cats.delete_one({"name": cat_name})
     result = database.cats.find_one({"name": cat_name})
