@@ -6,7 +6,7 @@ client = MongoClient(
     server_api=ServerApi('1')
 )
 
-db = client.test
+db = client.animals
 
 MODES = {
     "show one": lambda: show_one(db),
@@ -41,43 +41,43 @@ def help():
         'exit' або 'close' - команди які завершують роботу скрипта
     """)
 
-def show_all(database):
-    result = database.cats.find({})
+def show_all(dbase):
+    result = dbase.cats.find({})
     for el in result:
         print(el)
 
 
-def show_one(database):
+def show_one(dbase):
     cat_name = input("Введіть ім'я кота: ")
-    result = database.cats.find_one({"name": cat_name})
+    result = dbase.cats.find_one({"name": cat_name})
     print(result)
 
 
-def update_age(database):
+def update_age(dbase):
     cat_name = input("Введіть ім'я кота: ")
     cat_age = input("Введіть вік кота: ")
-    database.cats.update_one({"name": cat_name}, {"$set": {"age": cat_age}})
-    result = database.cats.find_one({"name": cat_name})
+    dbase.cats.update_one({"name": cat_name}, {"$set": {"age": cat_age}})
+    result = dbase.cats.find_one({"name": cat_name})
     print(result)
 
 
-def update_features(database):
+def update_features(dbase):
     cat_name = input("Введіть ім'я кота: ")
     cat_features = input("Введіть особливість кота: ")
-    database.cats.update_one({"name": cat_name}, {"$push": {"features": cat_features}})
-    result = database.cats.find_one({"name": cat_name})
+    dbase.cats.update_one({"name": cat_name}, {"$push": {"features": cat_features}})
+    result = dbase.cats.find_one({"name": cat_name})
     print(result)
 
 
-def delete_one(database):
+def delete_one(dbase):
     cat_name = input("Введіть ім'я кота: ")
-    database.cats.delete_one({"name": cat_name})
-    result = database.cats.find_one({"name": cat_name})
+    dbase.cats.delete_one({"name": cat_name})
+    result = dbase.cats.find_one({"name": cat_name})
     print(result)
 
 
-def delete_all(database):
-    result = database.cats.delete_many({})
+def delete_all(dbase):
+    result = dbase.cats.delete_many({})
     print(result.deleted_count)
 
 
