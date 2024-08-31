@@ -7,6 +7,7 @@ client = MongoClient("mongodb+srv://4attye:upEIrWRmbcF1WVtn@clusters.s150f.mongo
 db = client.animals
 
 MODES = {
+    "insert": lambda : insert(db),
     "show one": lambda: show_one(db),
     "show all": lambda: show_all(db),
     "update age": lambda: update_age(db),
@@ -19,6 +20,7 @@ MODES = {
 
 def help():
     print(f"""{Fore.GREEN}
+        'insert' - записує данні в БД
         'show one' - показує данні кота за його ім'ям
         'show all' - показує всі данні в колекції
         'update age' - оновлює вік кота за його ім'ям
@@ -27,6 +29,21 @@ def help():
         'delete all' - видаляє всі данні з колекції
         'exit' або 'close' - команди які завершують роботу скрипта {Fore.RESET}
     """)
+
+
+def insert(dbase):
+    cat_name = input(f"{Fore.BLUE}Введіть ім'я кота: {Fore.RESET}")
+    cat_age = int(input(f"{Fore.BLUE}Введіть вік кота: {Fore.RESET}"))
+    cat_features =  input(f"{Fore.BLUE}Введіть особливості кота через кому: {Fore.RESET}")
+    dbase.cats.insert_one({
+        "name": cat_name,
+        "age": cat_age,
+        "features": [f for f in cat_features.split(",")]
+    })
+
+
+
+
 
 def show_all(dbase):
     result = dbase.cats.find({})
