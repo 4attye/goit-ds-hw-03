@@ -76,12 +76,15 @@ def update_features(dbase):
 def delete_one(dbase):
     cat_name = input(f"{Fore.BLUE}Введіть ім'я кота: {Fore.RESET}")
     dbase.cats.delete_one({"name": cat_name})
-    print(f"{Fore.BLUE}Видалено!{Fore.RESET}")
+    print(f"{Fore.BLUE}Видалено {cat_name}!{Fore.RESET}")
 
 
 def delete_all(dbase):
     result = dbase.cats.delete_many({})
-    print(result.deleted_count)
+    print(f"""{Fore.RED}
+    Базу данних очищено!
+    Видалено {result.deleted_count} елементів!
+    {Fore.RESET}""")
 
 
 def main():
