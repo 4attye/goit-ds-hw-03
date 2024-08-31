@@ -56,5 +56,3 @@ if __name__ == '__main__':
         json.dump(authors_data, f, indent=4)
     with open('quotes.json', 'w', encoding="utf-8") as f:
         json.dump(quotes_data, f, ensure_ascii=False, indent=4)
-
-    print(authors_data)
