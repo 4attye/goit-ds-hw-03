@@ -9,7 +9,7 @@ client = MongoClient(
     server_api=ServerApi('1')
 )
 
-db = client.authors
+db = client.qoutes
 
 
 url = "http://quotes.toscrape.com"
