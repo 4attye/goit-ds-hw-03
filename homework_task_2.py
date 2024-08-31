@@ -1,10 +1,19 @@
 from bs4 import BeautifulSoup
 import json
+from pymongo import MongoClient
+from pymongo.server_api import ServerApi
 import requests
+
+client = MongoClient(
+    "mongodb+srv://4attye:upEIrWRmbcF1WVtn@clusters.s150f.mongodb.net/",
+    server_api=ServerApi('1')
+)
+
+db = client.authors
 
 
 url = "http://quotes.toscrape.com"
-quotes_data = []
+qoutes_data = []
 authors_data = []
 
 
@@ -17,23 +26,23 @@ def get_author_details(author_url):
     return born_date, born_location, description
 
 
-def get_quotes():
+def get_qoutes ():
     page = 1
     while True:
         response = requests.get(f"{url}/page/{page}/")
         soup = BeautifulSoup(response.text, "lxml")
-        quotes = soup.find_all("div", class_="quote")
+        qoutes = soup.find_all("div", class_="quote")
 
-        if not quotes:
+        if not qoutes:
             break
 
-        for quote in quotes:
-            text = quote.find("span", class_="text").text
-            author = quote.find("small", class_="author").text
-            tags = [tag.text for tag in quote.find_all("a", class_="tag")]
-            author_url = url + quote.find("a")["href"]
+        for qoute in qoutes:
+            text = qoute.find("span", class_="text").text
+            author = qoute.find("small", class_="author").text
+            tags = [tag.text for tag in qoute.find_all("a", class_="tag")]
+            author_url = url + qoute.find("a")["href"]
 
-            quotes_data.append({
+            qoutes_data.append({
                 "tags": tags,
                 "author": author,
                 "quote": text
@@ -50,9 +59,15 @@ def get_quotes():
         page += 1
 
 
+def insert_data():
+    db.authors.insert_many(authors_data)
+    db.qoutes.insert_many(qoutes_data)
+
 if __name__ == '__main__':
-    get_quotes()
+    get_qoutes ()
     with open('authors.json', 'w', encoding="utf-8") as f:
         json.dump(authors_data, f, indent=4)
     with open('quotes.json', 'w', encoding="utf-8") as f:
-        json.dump(quotes_data, f, ensure_ascii=False, indent=4)
+        json.dump(qoutes_data, f, ensure_ascii=False, indent=4)
+    insert_data()
+
