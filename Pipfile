@@ -8,6 +8,7 @@ pymongo = "*"
 lxml = "*"
 requests = "*"
 beautifulsoup4 = "*"
+colorama = "*"
 
 [dev-packages]
 

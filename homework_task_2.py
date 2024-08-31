@@ -4,7 +4,7 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 import requests
 
-client = MongoClient("mongodb+srv://4attye:upEIrWRmbcF1WVtn@clusters.s150f.mongodb.net/",server_api=ServerApi('1'))
+client = MongoClient("mongodb+srv://4attye:upEIrWRmbcF1WVtn@clusters.s150f.mongodb.net/", server_api=ServerApi('1'))
 db = client.qoutes
 url = "http://quotes.toscrape.com"
 qoutes_data = []
