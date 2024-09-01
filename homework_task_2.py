@@ -21,15 +21,19 @@ def get_author_details(author_url):
 
 
 def write_json():
-    with open('authors.json', 'w', encoding="utf-8") as f:
-        json.dump(authors_data, f, indent=4)
-    with open('qoutes.json', 'w', encoding="utf-8") as f:
-        json.dump(qoutes_data, f, ensure_ascii=False, indent=4)
+    with open('authors.json', 'w', encoding="utf-8") as a:
+        json.dump(authors_data, a, ensure_ascii=False, indent=4)
+    with open('qoutes.json', 'w', encoding="utf-8") as q:
+        json.dump(qoutes_data, q, ensure_ascii=False, indent=4)
 
 
 def insert_data():
-    db.authors.insert_many(authors_data)
-    db.qoutes.insert_many(qoutes_data)
+    with open('authors.json', 'r', encoding='utf-8') as a :
+        authors = json.load(a)
+        db.authors.insert_many(authors)
+    with open('qoutes.json', 'r', encoding='utf-8') as q:
+        authors = json.load(q)
+        db.qoutes.insert_many(authors)
 
 
 def main ():
@@ -43,7 +47,7 @@ def main ():
             break
 
         for qoute in qoutes:
-            text = qoute.find("span", class_="text").text
+            text = qoute.find("span", class_="text")
             author = qoute.find("small", class_="author").text
             tags = [tag.text for tag in qoute.find_all("a", class_="tag")]
             author_url = url + qoute.find("a")["href"]
@@ -51,7 +55,7 @@ def main ():
             qoutes_data.append({
                 "tags": tags,
                 "author": author,
-                "quote": text
+                "quote": text.text
             })
 
             if not any(a['fullname'] == author for a in authors_data):
