@@ -42,9 +42,6 @@ def insert(dbase):
     })
 
 
-
-
-
 def show_all(dbase):
     result = dbase.cats.find({})
     for el in result:
